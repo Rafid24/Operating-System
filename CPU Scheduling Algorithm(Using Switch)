@@ -1,0 +1,133 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+int process[50],aTime[50],bTime[50],abTime[50],wTime[50],tat_time[50];
+int n = 0,i = 0 ;
+float aw_time = 0, atat_time = 0;
+void input_FCFS()
+{
+    printf("\nTotal Processes : ");
+
+
+    scanf("%d",&n);
+
+    printf("Enter the Arrival Time and Burst Time.\n\n");
+
+    printf("\tAT BT\n");
+    for(i = 0 ; i < n ; i++)
+    {
+        process[i]=i+1;
+        printf("P%d :\t", i+1);
+        scanf("%d\t%d",&aTime[i],&bTime[i]);
+    }
+
+}
+void calculate_FCFS()
+{
+    wTime[0] = 0;
+
+    tat_time[0] = bTime[0];
+
+    abTime[0] = bTime[0]+aTime[0];
+
+    for( i = 1 ; i < n ; i++)
+    {
+        abTime[i] = abTime[i-1] + bTime[i];
+        tat_time[i] = abTime[i] - aTime[i];
+        wTime[i] = tat_time[i] - bTime[i];
+    }
+
+    for(i = 0 ; i < n ; i++)
+    {
+        aw_time = aw_time + wTime[i];
+        atat_time = atat_time + tat_time[i];
+    }
+
+}
+void display_FCFS()
+{
+    printf("\tAT\tBT\tCT\tTaT\tWT\n");
+    for(i = 0 ; i < n ; i++)
+    {
+        printf("P[%d]\t%d\t%d\t%d\t%d\t%d\n",i,aTime[i],bTime[i],abTime[i],tat_time[i],wTime[i]);
+    }
+
+    printf("\nAverage Waiting Time = %0.2f",aw_time/n);
+
+    printf("\nAverage Turn-Around-Time = %0.2f\n",atat_time/n);
+
+}
+
+
+
+
+
+
+
+int main()
+{
+    int choice;
+    cout<<"1 for Non-Preemtive"<<endl;
+    cout<<"2 for Preemtive"<<endl;
+    cout<<"\nEnter Choice:";
+    cin>>choice;
+    switch(choice)
+    {
+        case 1:
+        {
+            int choice1;
+            cout<<"\n1 for First Come First Serve(FCFS)"<<endl;
+            cout<<"2 for Shortest Job First(SJF)"<<endl;
+            cout<<"\nEnter Choice:";
+            cin>>choice1;
+            switch(choice1)
+            {
+            case 1:
+                {
+                    printf("\nFCFS CPU Scheduling Algorithm\n");
+                    input_FCFS();
+                    calculate_FCFS();
+                    display_FCFS();
+                    return 0;
+
+
+
+                }
+            case 2:
+                {
+
+                }
+            }
+        }
+
+        case 2:
+        {
+            int choice2;
+            cout<<"\n1 for Priority"<<endl;
+            cout<<"2 for Round Robin"<<endl;
+            cout<<"\nEnter Choice:";
+            cin>>choice2;
+            switch(choice2)
+            {
+            case 1:
+                {
+
+                }
+            case 2:
+                {
+
+                }
+            }
+        }
+
+        default:
+            printf("Error!");
+
+        break;
+
+
+    }
+
+
+    return 0;
+}

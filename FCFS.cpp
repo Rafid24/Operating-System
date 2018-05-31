@@ -3,7 +3,7 @@ using namespace std;
 
 int main()
 {
-    float process[50],aTime[50],bTime[50],abTime[50],wTime[50],tat_time[50];
+    int process[50],aTime[50],bTime[50],abTime[50],wTime[50],tat_time[50];
     int n = 0,i = 0 ;
     float aw_time = 0, atat_time = 0;
 
@@ -20,7 +20,7 @@ int main()
     {
         process[i]=i+1;
         printf("P%d :\t", i+1);
-        scanf("%f\t%f",&aTime[i],&bTime[i]);
+        scanf("%d\t%d",&aTime[i],&bTime[i]);
     }
 
     wTime[0] = 0;
@@ -45,7 +45,7 @@ int main()
     printf("\tAT\tBT\tCT\tTaT\tWT\n");
     for(i = 0 ; i < n ; i++)
     {
-        printf("P[%d]\t%.0f\t%0.0f\t%0.0f\t%0.0f\t%0.0f\n",i,aTime[i],bTime[i],abTime[i],tat_time[i],wTime[i]);
+        printf("P[%d]\t%d\t%d\t%d\t%d\t%d\n",i,aTime[i],bTime[i],abTime[i],tat_time[i],wTime[i]);
     }
 
     printf("\nAverage waiting time : %0.2f",aw_time/n);

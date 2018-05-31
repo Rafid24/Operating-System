@@ -1,12 +1,13 @@
-#include<stdio.h>
-#include<conio.h>
+#include<bits/stdc++.h>
+using namespace std;
+
 int main()
 {
-    float process[500],aTime[500],bTime[500],abTime[500],wTime[500],tat_time[500];
+    float process[50],aTime[50],bTime[50],abTime[50],wTime[50],tat_time[50];
     int n = 0,i = 0 ;
     float aw_time = 0, atat_time = 0;
 
-    printf("*** FCFS Scheduling Algorithm Using Arrival Time ***\n");
+    printf("*** FCFS Scheduling Algorithm ***\n");
     printf("\nEnter the number of process : ");
 
 

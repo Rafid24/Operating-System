@@ -3,14 +3,17 @@ using namespace std;
 
 int process[50],aTime[50],bTime[50],abTime[50],wTime[50],tat_time[50];
 int n = 0,i = 0 ;
-float aw_time = 0, atat_time = 0;                                      //FCFS
+float aw_time = 0, atat_time = 0;  //FCFS
+
+int p[10]={1,2,3,4,5,6,7,8,9,10},mini,k=1,btime=0;
+int bt[10],temp,j,at[10],wt[10],tt[10],ta=0,sum=0;
+float wavg=0,tavg=0,tsum=0,wsum=0;  //SJF
+
 
 
 void input_FCFS()
 {
     printf("\nTotal Processes : ");
-
-
     scanf("%d",&n);
 
     printf("Enter the Arrival Time and Burst Time.\n\n");
@@ -24,7 +27,6 @@ void input_FCFS()
     }
 
 }
-
 void calculate_FCFS()
 {
     wTime[0] = 0;
@@ -47,7 +49,6 @@ void calculate_FCFS()
     }
 
 }
-
 void display_FCFS()
 {
     printf("\tAT\tBT\tCT\tTaT\tWT\n");
@@ -62,11 +63,110 @@ void display_FCFS()
 
 }
 
+
+void input_SJF()
+{
+    printf("\nTotal Processes : ");
+    scanf("%d",&n);
+
+    printf("Enter the Arrival Time and Burst Time.\n\n");
+
+    printf("\tAT BT\n");
+    for(i = 0 ; i < n ; i++)
+    {
+        p[i]=i+1;
+        printf("P%d :\t", i+1);
+        scanf("%d\t%d",&at[i],&bt[i]);
+    }
+}
+
+/*Sorting According to Arrival Time*/
+void calculate_SJF()
+{
+    for(i=0;i<n;i++)
+    {
+        for(j=0;j<n;j++)
+        {
+            if(at[i]<at[j])
+            {
+                temp=p[j];
+                p[j]=p[i];
+                p[i]=temp;
+                temp=at[j];
+                at[j]=at[i];
+                at[i]=temp;
+                temp=bt[j];
+                bt[j]=bt[i];
+                bt[i]=temp;
+            }
+        }
+    }
+    for(j=0;j<n;j++)
+    {
+        btime=btime+bt[j];
+        mini=bt[k];
+        for(i=k;i<n;i++)
+        {
+            if (btime>=at[i] && bt[i]<mini)
+            {
+                temp=p[k];
+                p[k]=p[i];
+                p[i]=temp;
+                temp=at[k];
+                at[k]=at[i];
+                at[i]=temp;
+                temp=bt[k];
+                bt[k]=bt[i];
+                bt[i]=temp;
+            }
+            }
+        k++;
+    }
+    wt[0]=0;
+    for(i=1;i<n;i++)
+    {
+        sum=sum+bt[i-1];
+        wt[i]=sum-at[i];
+        wsum=wsum+wt[i];
+    }
+
+    wavg=(wsum/n);
+    for(i=0;i<n;i++)
+    {
+        ta=ta+bt[i];
+        tt[i]=ta-at[i];
+        tsum=tsum+tt[i];
+    }
+
+    tavg=(tsum/n);
+}
+
+void display_SJF()
+{
+
+
+    printf("\tAT\tBT\tCT\tTaT\tWT\n");
+    for(i = 0 ; i < n ; i++)
+    {
+        printf("P[%d]\t%d\t%d\t%d\t%d\t%d\n",i,at[i],bt[i],tt[i],wt[i]);
+    }
+
+    printf("\nAverage Waiting Time = %0.2f",wavg/n);
+
+    printf("\nAverage Turn-Around-Time = %0.2f\n",tavg/n);
+
+}
+
+
+
+
+
+
 int main()
 {
     int choice;
-    cout<<"1 for Non-Preemptive"<<endl;
-    cout<<"2 for Preemptive"<<endl;
+    cout<<"1 for Non-Preemtive"<<endl;
+    cout<<"2 for Preemtive"<<endl;
     cout<<"\nEnter Choice:";
     cin>>choice;
 
@@ -93,64 +193,10 @@ int main()
                 }
             case 2:
                 {
-                    printf("\nShortest Job First CPU Scheduling Algorithm\n\n");
-                    int bt[20],p[20],wt[20],tat[20],i,j,n,total=0,pos,temp;
-                    float avg_wt,avg_tat;
-                    printf("Enter number of process:");
-                    scanf("%d",&n);
-
-                    printf("\nEnter Burst Time:\n");
-                    for(i=0;i<n;i++)
-                    {
-                        printf("p%d:",i+1);
-                        scanf("%d",&bt[i]);
-                        p[i]=i+1;
-                    }
-
-                    for(i=0;i<n;i++)
-                    {
-                        pos=i;
-                        for(j=i+1;j<n;j++)
-                        {
-                            if(bt[j]<bt[pos])
-                            pos=j;
-                        }
-
-                        temp=bt[i];
-                        bt[i]=bt[pos];
-                        bt[pos]=temp;
-
-                        temp=p[i];
-                        p[i]=p[pos];
-                        p[pos]=temp;
-                    }
-
-                    wt[0]=0;
-
-                    for(i=1;i<n;i++)
-                    {
-                        wt[i]=0;
-                        for(j=0;j<i;j++)
-                        {
-                            wt[i]+=bt[j];
-                        }
-                    total+=wt[i];
-                    }
-                    avg_wt=(float)total/n;
-                    total=0;
-
-                    printf("\nProcess\t    Burst Time    \tWaiting Time\tTurnaround Time");
-                    for(i=0;i<n;i++)
-                    {
-                        tat[i]=bt[i]+wt[i];
-                        total+=tat[i];
-                        printf("\np%d\t\t  %d\t\t    %d\t\t\t%d",p[i],bt[i],wt[i],tat[i]);
-                    }
-
-                    avg_tat=(float)total/n;
-                    printf("\n\nAverage Waiting Time=%.2f",avg_wt);
-                    printf("\nAverage Turnaround Time=%.2f\n",avg_tat);
-
+                    printf("\nShortest Job First CPU Scheduling Algorithm\n");
+                    input_SJF();
+                    calculate_SJF();
+                    display_SJF();
                 }
             }
         }
